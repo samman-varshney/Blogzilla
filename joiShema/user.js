@@ -22,7 +22,7 @@ const userSchema = Joi.object({
                 'string.empty': 'lastname cannot be empty',
                 'any.required': 'lastname is required'
             }),
-        bio: Joi.string(),
+        bio: Joi.string().trim().allow('').optional(),
         socials: Joi.object({
            twitter: Joi.string().pattern(/^https?:\/\/(www\.)?(twitter\.com|x\.com)\/[A-Za-z0-9_]{1,15}$/
             ).messages({
