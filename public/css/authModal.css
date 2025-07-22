@@ -1,0 +1,28 @@
+       .auth-modal {
+            border-radius: 12px;
+            overflow: hidden;
+            border: none;
+        }
+        .auth-modal-header {
+            background-color: #026bff;
+            color: white;
+        }
+        .auth-btn-primary {
+            background-color: #026bff;
+            border-color: #026bff;
+        }
+        .auth-btn-primary:hover {
+            background-color: #013d9d;
+            border-color: #013d9d;
+        }
+        .auth-btn-outline {
+            color: #026bff;
+            border-color: #026bff;
+        }
+        .auth-btn-outline:hover {
+            background-color: #f8f9fa;
+        }
+        .auth-model-img{
+            width: 200px;
+            height: auto;
+        }

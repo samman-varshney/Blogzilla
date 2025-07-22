@@ -1,0 +1,89 @@
+
+
+ /* Float left and add margin */
+.image-style-align-left {
+  float: left;
+  margin: 0 1.5em 1.5em 0;
+  display: block;
+  max-width: 100%;
+}
+
+/* Float right and add margin */
+.image-style-align-right {
+  float: right;
+  margin: 0 0 1.5em 1.5em;
+  display: block;
+  max-width: 100%;
+}
+
+/* Center alignment stays block */
+.image-style-align-center {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* Ensure image inside figure resizes */
+figure.image img {
+  max-width: 100%;
+  height: auto;
+}
+
+figure.media oembed {
+  width: 90%;
+  height: auto;
+}
+
+.blog-container {
+    
+    padding: 2rem;
+    
+}
+
+.blog-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.blog-meta {
+    font-size: 0.9rem;
+    color: #e4e5e6;
+}
+
+
+
+.action-buttons .btn {
+    min-width: 100px;
+}
+
+.content-container {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+ table {
+  display: block;         /* Important: allows horizontal scroll */
+  overflow-x: auto;
+  white-space: nowrap;    /* Prevent content from wrapping */
+  width: max-content;     /* Table expands naturally */
+  max-width: 100%;        /* Prevents breaking layout */
+  border-collapse: collapse;
+}
+
+ th,
+ td {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+table::-webkit-scrollbar {
+  height: 3px;
+  margin-top: 2px;
+}
+
+table::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 4px;
+}

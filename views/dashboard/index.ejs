@@ -1,0 +1,188 @@
+<% layout('layouts/dashboard-boilerplate') %>
+
+<% block('title').prepend(title) %>
+
+
+
+
+<div class="row mb-4">
+  <!-- Stats Cards -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="stats-card posts h-100">
+      <div class="d-flex justify-content-between">
+        <div>
+          <h5 class="mb-1">Total Blog Posts</h5>
+          <h2 class="mb-0"><%= user.stats.blogCount || 0 %></h2>
+         
+        </div>
+        <i class="bi bi-file-earmark-text stats-icon"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="stats-card views h-100">
+      <div class="d-flex justify-content-between">
+        <div>
+          <h5 class="mb-1">Total Views</h5>
+          <h2 class="mb-0"><%= totalViews %></h2>
+          
+        </div>
+        <i class="bi bi-eye stats-icon"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="stats-card comments h-100">
+      <div class="d-flex justify-content-between">
+        <div>
+          <h5 class="mb-1">Comments</h5>
+          <h2 class="mb-0"><%= totalComments %></h2>
+        
+        </div>
+        <i class="bi bi-chat-left-text stats-icon"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="stats-card followers h-100">
+      <div class="d-flex justify-content-between">
+        <div>
+          <h5 class="mb-1">Followers</h5>
+          <h2 class="mb-0"><%= user.stats.followerCount %></h2>
+         
+        </div>
+        <i class="bi bi-people stats-icon"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Activity Feed -->
+  <div class="col-lg-8 mb-4">
+    <div class="card post-card h-100">
+      <div class="card-header bg-white">
+        <h5 class="mb-0">Recent Activity</h5>
+      </div>
+      <div class="card-body">
+        <div class="activity-item">
+          <h6>New comment on "Getting Started with Node.js"</h6>
+          <p class="mb-1">John Doe commented: "Great tutorial!"</p>
+          <p class="activity-time">2 hours ago</p>
+        </div>
+        <div class="activity-item">
+          <h6>Post published</h6>
+          <p class="mb-1">Your post "React Hooks Guide" is now live</p>
+          <p class="activity-time">1 day ago</p>
+        </div>
+        <div class="activity-item">
+          <h6>New follower</h6>
+          <p class="mb-1">Jane Smith started following you</p>
+          <p class="activity-time">2 days ago</p>
+        </div>
+        <div class="activity-item">
+          <h6>Post liked</h6>
+          <p class="mb-1">Alex Johnson liked your post "CSS Grid Tutorial"</p>
+          <p class="activity-time">3 days ago</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Posts -->
+  <div class="col-lg-4 mb-4">
+    <div class="card post-card h-100">
+      <div class="card-header bg-white">
+        <h5 class="mb-0">Your Recent Posts</h5>
+      </div>
+      
+      <div class="card-body d-flex flex-column justify-content-between">
+        <% if (user.recentBlogs.length == 0) { %>
+          <div class="d-flex flex-column align-items-center justify-content-center mt-4">
+                            <img src="/images/designer.svg" style="width: 100%; height:200px;" alt="">
+                            <p class="mt-3 text-slate-600 ">No Blogs found</p>
+                        </div>
+        <% }else { %>
+          <% user.recentBlogs.forEach( blog=> { %>
+        <div class="mb-3 border border-2 border-primary border-opacity-25 rounded-3">
+          <img src="<%= blog.thumbnail.url %>" class="post-thumbnail w-100 mb-2">
+          <div class="p-2">
+             <h6>a<%= blog.title %></h6>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="badge bg-primary"><%= blog.category %></span>
+            <i class="far fa-calendar-alt me-2"></i>
+            <small>
+                <%= blog.createdAt.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                }) %>
+            </small>
+          </div>
+          <div class="d-flex justify-content-start ">
+            <a href="/dashboard/blogs/<%=blog._id%>/analytics" class="btn btn-outline-warning btn-sm me-2"><i class="bi bi-graph-up me-2"></i>View Analytics</a>
+            <a href="/blogs/<%=blog._id%>/show" class="btn btn-outline-primary btn-sm"><i class="bi bi-book-fill me-2"></i>Read</a>
+          </div>
+          </div>
+         
+        </div>
+        
+        <% }) %>
+        <div class="text-center">
+          <a href="/dashboard/myBlogs" class="btn btn-outline-primary">View All Posts</a>
+        </div>
+        <%}%>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart Section -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card post-card">
+      <div class="card-header bg-white">
+        <h5 class="mb-0">Views Analytics</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="viewsChart" height="300"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Views Chart
+  const ctx = document.getElementById('viewsChart').getContext('2d');
+  const viewsChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'Post Views',
+        data: [120, 190, 170, 220, 300, 280],
+        backgroundColor: 'rgba(108, 92, 231, 0.2)',
+        borderColor: 'rgba(108, 92, 231, 1)',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>

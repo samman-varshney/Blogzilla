@@ -1,0 +1,298 @@
+<% layout('layouts/dashboard-boilerplate') %>
+
+<% block('title').prepend(title) %>
+
+<% block('head').append(`
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blogzilla-primary: #6a11cb;
+            --blogzilla-secondary: #2575fc;
+            --blogzilla-accent: #ff6b6b;
+            --blogzilla-light: #f8f9fa;
+            --blogzilla-dark: #212529;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--blogzilla-primary), var(--blogzilla-secondary));
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: var(--blogzilla-primary);
+        }
+        
+        .nav-pills .nav-link {
+            color: var(--blogzilla-dark);
+            font-weight: 500;
+        }
+        
+        .connection-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .connection-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .avatar {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .btn-blogzilla {
+            background: linear-gradient(135deg, var(--blogzilla-primary), var(--blogzilla-secondary));
+            border: none;
+            color: white;
+        }
+        
+        .btn-blogzilla-outline {
+            border: 1px solid var(--blogzilla-primary);
+            color: var(--blogzilla-primary);
+        }
+        
+        .stat-number {
+            font-weight: 700;
+            color: var(--blogzilla-primary);
+        }
+        
+        .tab-content {
+            padding: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .avatar {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+    `) %>
+
+    <div class="container-fluid p-0">
+        <!-- Header -->
+    
+
+        <!-- Main Content -->
+        <main class="container py-4">
+            <!-- Connections Tabs -->
+            <ul class="nav nav-pills mb-4 justify-content-center" id="connectionsTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="following-tab" data-bs-toggle="pill" data-bs-target="#following" type="button" role="tab">
+                        <i class="fas fa-user-friends me-2"></i>Following <span class="badge bg-primary ms-1"><%= followings.length %></span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="followers-tab" data-bs-toggle="pill" data-bs-target="#followers" type="button" role="tab">
+                        <i class="fas fa-users me-2"></i>Followers <span class="badge bg-primary ms-1"><%= followers.length %></span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="suggestions-tab" data-bs-toggle="pill" data-bs-target="#suggestions" type="button" role="tab">
+                        <i class="fas fa-user-plus me-2"></i>Suggestions <span class="badge bg-primary ms-1"><%= suggestions.length %></span>
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="connectionsTabContent">
+                <!-- Following Tab -->
+                <div class="tab-pane fade show active" id="following" role="tabpanel">
+                    <div class="row g-4">
+                        <!-- Following Cards -->
+                         <% followings.forEach( f=>{ %>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="connection-card bg-white p-4">
+                                <div class="d-flex align-items-center flex-column mb-3">
+                                    <img src="<%=f.following.avatar.url %>" alt="<%=f.following.fullname %>" class="avatar rounded-circle me-3">
+                                    <div>
+                                        <h5 class="mb-1"><%= f.following.fullname %></h5>
+                                        <p class="text-muted small mb-0">@<%= f.following.handle %></p>
+                                    </div>
+                                </div>
+                              
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div class="text-center">
+                                        <div class="stat-number"><%= f.following.stats.followerCount %></div>
+                                        <small class="text-muted">Followers</small>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="stat-number"><%= f.following.stats.blogCount %></div>
+                                        <small class="text-muted">Posts</small>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="stat-number"><%= f.following.stats.followingCount %></div>
+                                        <small class="text-muted">Following</small>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2 d-md-flex">
+                                    <a href="/users/<%= f.following._id %>" class="btn btn-blogzilla btn-sm flex-grow-1">
+                                        <i class="fas fa-eye me-1"></i> View Profile
+                                    </a>
+                                    <button onclick="follow('<%=user._id%>','<%=f.following._id%>', event)" class="btn btn-outline-danger btn-sm  flex-grow-1">
+                                        <i class="bi bi-person-dash-fill me-2"></i><span>Unfollow</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                        
+                        <% if(followings.length <= 0) { %> 
+                        <div class="d-flex flex-column align-items-center justify-content-center mt-4">
+                            <img src="/images/communication.svg" style="width: 300px; height:auto;" alt="">
+                            <p class="mt-3 text-slate-600">No following found</p>
+                        </div>
+
+
+                        <%}%>
+
+                        <!-- Add more following cards as needed -->
+                    </div>
+                </div>
+
+                <!-- Followers Tab -->
+                <div class="tab-pane fade" id="followers" role="tabpanel">
+                    <div class="row g-4">
+                        <!-- Follower Cards  -->
+                        <% followers.forEach( f=> { %>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="connection-card bg-white p-4">
+                                <div class="d-flex align-items-center flex-column mb-3">
+                                    <img src="<%= f.follow.avatar.url %>" alt="<%= f.follow.fullname %>" class="avatar rounded-circle me-3">
+                                    <div>
+                                        <h5 class="mb-1"><%= f.follow.fullname %></h5>
+                                        <p class="text-muted small mb-0">@<%= f.follow.handle %></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div class="text-center">
+                                        <div class="stat-number"><%= f.follow.stats.followerCount %></div>
+                                        <small class="text-muted">Followers</small>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="stat-number"><%= f.follow.stats.blogCount %></div>
+                                        <small class="text-muted">Posts</small>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="stat-number"><%= f.follow.stats.followingCount %></div>
+                                        <small class="text-muted">Following</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="d-flex flex-column flex-md-row gap-2">
+
+                                    <button onclick="follow('<%=user._id%>', '<%=f.follow._id%>', event)" class="btn btn-blogzilla  btn-sm flex-grow-1">
+                                       <% const isFollowing = followings.some(fw => fw.following._id.equals(f.follow._id));
+                                    %>
+
+                                    <% if (isFollowing) { %>
+                                    <i class="bi bi-person-dash-fill me-2"></i><span>Unfollow</span>
+                                    <% } else { %>
+                                    <i class="bi bi-person-plus-fill me-2"></i><span>follow</span>
+                                    <% } %>
+                                    </button>
+
+                                    
+                                    <button onclick="toggle('<%=f.follow._id%>', '<%=user._id%>', event)" class="btn btn-outline-danger btn-sm flex-grow-1">
+                                        <i class="fas fa-trash-alt me-1"></i> remove
+                                    </button>
+                                    </div>
+                                    <a href="/users/<%= f.follow._id %>" class="btn btn-blogzilla btn-sm flex-grow-1">
+                                        <i class="fas fa-eye me-1"></i> View Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <%})%>
+                         <% if(followers.length <= 0) { %> 
+                         <div class="d-flex flex-column align-items-center justify-content-center mt-4">
+                            <img src="/images/communication.svg" style="width: 300px; height:auto;" alt="">
+                            <p class="mt-3 text-slate-600">No follower found</p>
+                        </div>
+
+                        <%}%>
+
+                        <!-- Add more follower cards as needed -->
+                    </div>
+                </div>
+
+                <!-- Suggestions Tab -->
+                <div class="tab-pane fade" id="suggestions" role="tabpanel">
+                    <div class="row g-4">
+                        <!-- Suggestion Cards -->
+                         <% suggestions.forEach( f => { %>
+                        <div class="col-md-6 col-lg-4" >
+                            <div class="connection-card bg-white p-4" >
+                                <div class="d-flex align-items-center mb-3 flex-column">
+                                    <img src="<%= f.avatar.url %>" alt="<%= f.fullname %>" class="avatar rounded-circle me-3">
+                                    <div>
+                                        <h5 class="mb-1"><%= f.firstname+" "+f.lastname%></h5>
+                                        <p class="text-muted small mb-0">@<%= f.handle %></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div class="text-center">
+                                        <div class="stat-number"><%= f.stats.followerCount %></div>
+                                        <small class="text-muted">Followers</small>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="stat-number"><%= f.stats.blogCount %></div>
+                                        <small class="text-muted">Posts</small>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="stat-number"><%= f.followingCount || 0 %></div>
+                                        <small class="text-muted">Followings</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 flex-column">
+                                    <div class="d-flex flex-column flex-md-row gap-2">
+                                    <button onclick="follow('<%=user._id%>', '<%=f._id%>', event)" class="btn btn-blogzilla  btn-sm flex-grow-1">
+                                    <i class="bi bi-person-plus-fill me-2"></i><span>follow</span>
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm flex-grow-1">
+                                        <i class="fas fa-times me-1"></i> Dismiss
+                                    </button>
+                                    </div>
+                                    <a href="/users/<%= f._id %>" class="btn btn-blogzilla btn-sm flex-grow-1">
+                                        <i class="fas fa-eye me-1"></i> View Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                         <% if(suggestions.length <= 0) { %> 
+                             <div class="d-flex flex-column align-items-center justify-content-center mt-4">
+                            <img src="/images/communication.svg" style="width: 300px; height:auto;" alt="">
+                            <p class="mt-3 text-slate-600 ">No suggestion found</p>
+                        </div>
+
+                        <%}%>
+                        <!-- Add more suggestion cards as needed -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+<script>
+    async function toggle(follow, following, event){
+        alert('Functionlity no available right now, do try in future')
+    }
+</script>
+<script src="/js/bootstrapToast.js"></script>
+<script src="/js/likefunctionality.js"></script>

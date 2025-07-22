@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@media print {
+	body {
+		margin: 0 !important;
+	}
+}
+
+.main-container {
+	font-family: 'Lato';
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.ck-content {
+	font-family: 'Lato';
+	line-height: 1.6;
+	word-break: break-word;
+}
+
+.editor-container_classic-editor .editor-container__editor {
+	min-width: 100%;
+	max-width: 100%;
+}
+
+.editor-container_include-block-toolbar {
+	margin-left: 42px;
+}
+
+.editor_container__word-count .ck-word-count {
+	color: var(--ck-color-text);
+	display: flex;
+	height: 30px;
+	gap: var(--ck-spacing-small);
+	justify-content: flex-end;
+	font-size: var(--ck-font-size-base);
+	line-height: var(--ck-line-height-base);
+	font-family: var(--ck-font-face);
+	padding: var(--ck-spacing-small) var(--ck-spacing-standard);
+}
+
+.editor-container_include-word-count.editor-container_classic-editor .editor_container__word-count {
+	border: 1px solid var(--ck-color-base-border);
+	border-radius: var(--ck-border-radius);
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border-top: none;
+}
+
+.editor-container_include-word-count.editor-container_classic-editor .editor-container__editor .ck-editor .ck-editor__editable {
+	border-radius: 0;
+}
+
+.blog-thumbnail {
+    border-radius: 12px;
+    max-height: 400px;
+    object-fit: cover;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Allow text selection inside the editor, even if the page disables it elsewhere */
+.ck-editor__editable,
+.ck-content,
+.cke_editable {
+  -webkit-user-select: text !important; /* iOS / Android Chrome */
+  -moz-user-select: text !important;    /* old Firefox */
+  -ms-user-select: text !important;     /* old IE / Edge */
+  user-select: text !important;
+}
+/* Undo the library’s rule for the editor only */
+.ck-editor__editable,
+.ck-content {
+  -webkit-touch-callout: text !important;
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+

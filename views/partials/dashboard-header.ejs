@@ -1,0 +1,30 @@
+<header class="dashboard-header">
+  <div class="d-flex align-items-center">
+    <button class="btn btn-sm btn-outline-secondary me-3 d-lg-none" onclick="toggleMobileSidebar()">
+      <i class="bi bi-list"></i>
+    </button>
+    <h5 class="mb-0"><img src="/images/dashboardlogo.svg" class="me-2" style="width: 30px; height: 40px;" alt=""><%= title || 'Dashboard' %></h5>
+
+  </div>
+  
+  <div class="user-menu d-flex align-items-center">
+    <div class="dropdown">
+      <button class="btn dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
+        <img src="<%= user.avatar.url || '/images/default-avatar.jpg' %>" alt="User Avatar">
+        <span class="d-none d-md-inline"><%= user.fullname %></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="/users/<%=currentUser._id%>"><i class="bi bi-person-circle me-2"></i>Profile</a></li>
+        <li><a class="dropdown-item" href="/blogs"><i class="bi bi-box-arrow-left me-2"></i>Back</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="/logout"><span class="me-2">Logout</span><i class="bi bi-box-arrow-right me-2"></i></a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script>
+  function toggleMobileSidebar() {
+    document.querySelector('.dashboard-container').classList.toggle('sidebar-mobile-show');
+  }
+</script>

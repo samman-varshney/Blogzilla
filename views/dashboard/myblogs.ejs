@@ -1,0 +1,266 @@
+<% layout('layouts/dashboard-boilerplate') %>
+
+<% block('title').prepend(title) %>
+
+<% block('head').append(`
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blogzilla-primary: #6a11cb;
+            --blogzilla-secondary: #2575fc;
+            --blogzilla-accent: #ff6b6b;
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: var(--blogzilla-primary);
+            color: rgb(213, 181, 242);
+        }
+        .nav-pills .nav-link{
+            color: var(--blogzilla-secondary) ;
+        }
+        
+        .border-accent {
+            border-left: 5px solid var(--blogzilla-accent) !important;
+        }
+        
+        .scrolling-alert {
+            overflow: hidden;
+            position: relative;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+        
+        .scrolling-text {
+            display: inline-block;
+            padding-left: 100%;
+            white-space: nowrap;
+            animation: scroll 15s linear infinite;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+`) %>
+
+<div class="container-fluid px-0 min-vh-100">
+    <!-- Delete Draft Modal -->
+    <div class="modal fade" id="deleteDraftModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Draft</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this Draft?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="delete-draft">Delete Draft</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="px-sm-1 px-md-4 py-3" style="max-width: 90vw;">
+        <!-- Auto-save Warning Marquee -->
+        <!-- <div class="scrolling-alert alert mb-3 d-none rounded" id="autosave-marquee">
+            <div class="scrolling-text">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                Auto-saved drafts will be deleted after 7 days if not published or manually saved.
+            </div>
+        </div> -->
+
+        <!-- Blog Tabs -->
+        <div class="d-flex flex-column">
+            <ul class="nav nav-pills mb-4 overflow-auto flex-nowrap" id="blogTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="published-tab" data-bs-toggle="pill" data-bs-target="#published" type="button" role="tab">
+                        <i class="fas fa-globe me-2"></i> Published
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="drafts-tab" data-bs-toggle="pill" data-bs-target="#drafts" type="button" role="tab">
+                        <i class="fas fa-file-alt me-2"></i> Drafts
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="blogTabsContent" >
+                <!-- Published Posts -->
+                <div class="tab-pane fade show active" id="published" role="tabpanel">
+                    <% if (blogs.length === 0) { %>
+                        <div class="text-center py-5">
+                            <img src="/images/idea-launch.svg" class="img-fluid" style="max-width: 300px;" alt="No blogs">
+                            <p class="mt-3 text-muted">No Blogs found</p>
+                        </div>
+                    <% } else { %>
+                        <div class="row row-cols-1 row-cols-md-2  row-cols-xl-3 g-3">
+                            <% blogs.forEach(blog => { %>
+                                <div class="col">
+                                    <div class="card h-100 border-accent">
+                                        <div class="position-relative">
+                                            <img src="<%= blog.thumbnail.url %>" class="card-img-top" style="height: 200px; object-fit: cover;" alt="<%= blog.title %>">
+                                            <span class="position-absolute top-0 start-0 text-white m-2 px-2 rounded-pill small" style="background-color: #FF6B6B;">
+                                                <%= blog.category || 'no category' %>
+                                            </span>
+                                        </div>
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title"><%= blog.title %></h5>
+                                            <p class="card-text text-truncate-3"><%= blog.preview %>...</p>
+                                            <div class="mt-auto d-flex flex-column flex-sm-row gap-2">
+                                                <a href="/dashboard/blogs/<%= blog._id %>/analytics" class="btn btn-sm btn-outline-warning flex-grow-1">
+                                                    <i class="fas fa-chart-line me-1"></i> Analytics
+                                                </a>
+                                                <a href="/blogs/<%= blog._id %>/show" class="btn btn-sm btn-outline-primary flex-grow-1">
+                                                    <i class="fas fa-book-open me-1"></i> Read
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    <% } %>
+                </div>
+                <div >
+  <div class="scrolling-alert alert mb-3 d-none rounded" id="autosave-marquee">
+            <div class="scrolling-text">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                Auto-saved drafts will be deleted after 7 days if not published or manually saved.
+            </div>
+        </div></div>
+                <!-- Drafts -->
+                <div class="tab-pane fade" id="drafts" role="tabpanel" >
+                    
+                    <% if (drafts.length === 0) { %>
+                        <div class="text-center py-5">
+                            <img src="/images/idea-launch.svg" class="img-fluid" style="max-width: 300px;" alt="No drafts">
+                            <p class="mt-3 text-muted">No Drafts found</p>
+                        </div>
+                    <% } else { %>
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                            <% drafts.forEach(draft => { %>
+                                <div class="col">
+                                    <div class="card h-100 border-accent" style="min-width: 200px;">
+                                        <div class="position-relative">
+                                            <img src="<%= draft.thumbnail ? draft.thumbnail.url : '/images/default-thumbnail.jpg' %>" 
+                                                 class="card-img-top" 
+                                                 style="height: 200px; object-fit: cover;" 
+                                                 alt="<%= draft.thumbnail ? draft.thumbnail.filename : 'default-thumbnail' %>">
+                                            <span class="position-absolute top-0 start-0  text-white m-2 px-2 rounded-pill small" style="background-color: #FF6B6B;">
+                                                <%= draft.category || 'no category specified' %>
+                                            </span>
+                                        </div>
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title"><%= draft.title %></h5>
+                                            <p class="card-text text-truncate-3"><%= draft.preview %>...</p>
+                                            
+                                            <div class="small text-muted mb-2">
+                                                <div><i class="far fa-calendar-plus me-1"></i> <%= new Date(draft.createdAt).toLocaleString() %></div>
+                                                <div><i class="far fa-edit me-1"></i> <%= new Date(draft.updatedAt).toLocaleString() %></div>
+                                                <div><i class="fas fa-info-circle me-1"></i> <%= draft.isAutoSaved ? 'Auto Saved' : 'Manually Saved' %></div>
+                                            </div>
+                                              
+                                           <div class="mt-auto d-flex flex-column flex-sm-row gap-2">
+                                                <a href="/drafts/<%= draft._id %>/edit" class="btn btn-sm btn-primary w-100">
+                                                    <i class="fas fa-edit me-1"></i> Edit
+                                                </a>
+                                                <button class="btn btn-sm btn-outline-danger w-100" 
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#deleteDraftModal"
+                                                        data-draft-id="<%= draft._id %>">
+                                                    <i class="fas fa-trash me-1"></i> Delete
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+      function pencilLoader() {
+        const myModal = new bootstrap.Modal(document.querySelector('#pencilLoaderModal'));
+        myModal.show();
+
+      }
+      function pencilLoaderHide(){
+        const myModal = new bootstrap.Modal(document.querySelector('#pencilLoaderModal'));
+        myModal.hide();
+      }
+    </script>
+
+<script>
+    // Handle draft deletion
+    
+    // const pencilLoader = new bootstrap.Modal(document.querySelector('#pencilLoaderModal'));
+        
+
+    let draftId;
+    document.getElementById('deleteDraftModal')?.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        draftId = button.getAttribute('data-draft-id');
+    });
+
+    document.getElementById('delete-draft')?.addEventListener('click', async function (){
+            this.disabled = true;
+            this.innerHTML = `<div class="spinner-border spinner-border-sm" role="status"></div>`;
+        try {
+        
+            const res = await fetch(`/api/drafts/${draftId}`, {
+                method: 'DELETE'
+            });
+            if (res.ok) {
+                window.location.reload();
+            } else {
+                const result = await res.json();
+          
+                alert(result.message || 'Failed to delete draft');
+            }
+        } catch (err) {
+             this.disabled = false;
+        this.innerHTML = `Delete Draft`;
+            console.error(err);
+            alert('Something went wrong');
+        }
+       
+    });
+
+    // Toggle marquee visibility based on active tab
+    const autosaveMarquee = document.getElementById('autosave-marquee');
+    const draftTab = document.getElementById('drafts-tab');
+    const publishedTab = document.getElementById('published-tab');
+    
+    if (draftTab && publishedTab && autosaveMarquee) {
+        draftTab.addEventListener('shown.bs.tab', () => {
+            autosaveMarquee.classList.remove('d-none');
+        });
+        
+        publishedTab.addEventListener('shown.bs.tab', () => {
+            autosaveMarquee.classList.add('d-none');
+        });
+    }
+</script>
+<script>
+      document.querySelectorAll('form').forEach(form => {
+              form.addEventListener('submit', (event) => {
+                  const btn = form.querySelector('button[type="submit"]');
+                  if (btn){ btn.disabled = true;
+                    btn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status"></div>`
+                  }
+              });
+          });
+
+    </script>

@@ -1,0 +1,75 @@
+<footer class="mt-5 py-4 bg-dark text-secondary">
+  <div class="container">
+    <div class="row">
+      <!-- Brand / About -->
+      <div class="col-12 col-md-4 mb-4 mb-md-0">
+        <div class="d-flex flex-column align-items-center align-items-md-start">
+          <img src="/images/neonxzilla.png" class="img-fluid mb-2" style="max-width: 200px;" alt="logo">
+          <h5 class="fw-bold text-white mb-3">BlogZilla</h5>
+          <p class="small text-center text-md-start">We hope you enjoy using BlogZilla as much as we enjoyed building it. Stay tuned for new features, and keep writing — your voice matters!</p>
+        </div>
+      </div>
+
+      <!-- Quick Links & Categories -->
+      <div class="col-12 col-md-8">
+        <div class="row">
+          <!-- Quick Links -->
+          <div class="col-6 col-md-6 mb-4 mb-md-0">
+            <h6 class="text-uppercase fw-semibold text-primary mb-3">Quick Links</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="/" class="text-decoration-none">Home</a></li>
+              <li class="mb-2"><a href="/blogs" class="text-decoration-none">Blogs</a></li>
+              <li class="mb-2"><a href="/about" class="text-decoration-none">About</a></li>
+              <% if(!currentUser){ %>
+              <li class="mb-2"><a href="/register" class="text-decoration-none">Register</a></li>
+              <li class="mb-2"><a href="/login" class="text-decoration-none">Login</a></li>
+              <% } %>
+            </ul>
+          </div>
+
+          <!-- Categories -->
+          <div class="col-6 col-md-6 mb-4 mb-md-0">
+            <h6 class="text-uppercase fw-semibold text-primary mb-3">Categories</h6>
+            <ul class="list-unstyled">
+              <% for(let i=0; i<7; i++){ %>
+              <li class="mb-2"><a href="/api/category/<%=categories[i]%>" class="text-decoration-none"><%=categories[i]%></a></li>
+              <% } %>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div class="row mt-3">
+          <div class="col-12">
+            <h6 class="text-uppercase fw-semibold text-primary mb-3">Follow Us On</h6>
+            <div class="d-flex justify-content-center justify-content-md-start">
+              <a href="https://www.linkedin.com/in/samman-varshney-485834284/" target="_blank" class="me-3 fs-5" title="LinkedIn">
+                <i class="bi bi-linkedin"></i>
+              </a>
+              <a href="https://www.instagram.com/sammanvarshney/" class="me-3 fs-5" title="Instagram">
+                <i class="bi bi-instagram"></i>
+              </a>
+              <a href="https://x.com/fact99396896" class="me-3 fs-5" title="Twitter">
+                <i class="bi bi-twitter"></i>
+              </a>
+              <a href="#" class="me-3 fs-5" title="Facebook">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="https://github.com/samman-varshney" class="fs-5" title="GitHub">
+                <i class="bi bi-github"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="border-secondary my-4">
+    
+    <div class="text-center small">
+      &copy; <%= new Date().getFullYear() %> Blogzilla. All rights reserved. |  
+      <a href="/t&c" class="text-decoration-none">Terms</a> and 
+      <a href="/t&c" class="text-decoration-none">Privacy Policy</a>
+    </div>
+  </div>
+</footer>

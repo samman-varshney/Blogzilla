@@ -1,0 +1,218 @@
+
+        :root {
+            --primary: #1A365D;
+            --secondary: #FF6B6B;
+            --accent: #4ECDC4;
+            --light: #F5F7FA;
+            --dark: #2D3748;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #fafaf9;
+
+        }
+        
+      
+        
+        .hero-section {
+    background: url('/images/godzillaHero.jpg') no-repeat center center;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    padding: 5rem 0;
+    background-color: #80c0cb;
+    /* height: 100vh; or any height you prefer */
+}
+
+        
+        .category-chip {
+            background: white;
+            border-radius: 2rem;
+            padding: 0.5rem 1.25rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #dee2e6;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-chip:hover, .category-chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .blog-card {
+            background-color: white;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+            height: 100%;
+            border-left: 5px solid #ffa69e;
+        }
+        .card-body{
+            padding-bottom: 0;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .card-img-top {
+           
+            height: 200px;
+            object-fit: cover;
+            position: relative;
+        }
+        
+        .card-category {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--secondary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .card-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        
+        .card-text {
+            color: #6c757d;
+        }
+        
+        .card-meta {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .sidebar-widget {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid #ffa69e;
+        }
+        
+        .widget-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* .widget-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+        } */
+        
+        .popular-post {
+            display: flex;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        
+        .popular-post-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-right: 1rem;
+        }
+        
+        .popular-post-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .popular-post-meta {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+        
+        .tag-cloud a {
+            display: inline-block;
+            background: #f8f9fa;
+            color: #495057;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .tag-cloud a:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .newsletter-form .form-control {
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .newsletter-form .btn {
+            border-radius: 50px;
+            width: 100%;
+            background: var(--primary);
+            border: none;
+            padding: 0.5rem;
+        }
+        
+        .newsletter-form .btn:hover {
+            background: var(--dark);
+        }
+        
+       
+        
+        .social-icons a {
+            color: white;
+            background: rgba(255,255,255,0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 3rem 0;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+        }

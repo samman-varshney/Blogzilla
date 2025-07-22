@@ -1,0 +1,344 @@
+<% layout('layouts/boilerplate') %>
+
+<% block('title').append(`${user.fullname} | Blogzilla`) %>
+
+<% block('head').append(`
+
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/authModal.css">
+    <link rel="stylesheet" href="/css/socials-btn.css">
+    <style>
+        .circular-image {
+  width: 200px;      /* Set a fixed width */
+  height: 200px;     /* Set the same height */
+  border-radius: 50%;
+  object-fit: cover; /* Ensures the image fills the circle nicely */
+}
+
+        .profile-pic {
+            border: 4px solid white;
+            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+        }
+         .blog-card {
+            background-color: white;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+            height: 100%;
+            border-left: 5px solid #ffa69e;
+            width: 400px;
+        }
+        .card-body{
+            padding-bottom: 0;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .card-img-top {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            position: relative;
+        }
+        
+        .card-category {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: #FF6B6B;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .card-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        
+        .card-text {
+            color: #6c757d;
+        }
+        
+        .card-meta {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .text-clamp {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+         .social-img {
+            transition: transform 0.3s ease;
+            width: 27px;
+            height: auto;
+            }
+
+        .social-img:hover {
+        transform: scale(1.1); /* Adjust scale factor as needed */
+}
+    </style>     
+    
+
+`) %>
+
+
+<% if(success && success.length !== 0){ %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Hurray! </strong> <%= success %> 
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+<%}else if(error && error.length !== 0) {%>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Oops !</strong> <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+<%}%>
+
+<!-- Authentication Required Modal -->
+<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered auth-modal">
+        <div class="modal-content">
+            <div class="modal-header auth-modal-header">
+                <h5 class="modal-title" id="authModalLabel">
+                    <i class="fas fa-user-lock me-2"></i>Authentication Required
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+                <div class="mb-4">
+                    <img src="/images/creative-work.svg" class="auth-model-img" alt="creative-work">
+                </div>
+                <h4 class="mb-3">Want to engage with this content</h4>
+                <p class="text-muted mb-4">Sign in to like, comment and save your favorite articles.</p>
+                
+                <div class="d-grid gap-2 mb-3">
+                    <a href="/login" class="btn auth-btn-primary btn-lg rounded-pill">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </a>
+                    <a href="/register" class="btn auth-btn-outline btn-lg rounded-pill">
+                        <i class="fas fa-user-plus me-2"></i>Create Account
+                    </a>
+                </div>
+                
+                <p class="small text-muted mt-3">
+                    By continuing, you agree to our <a href="/t&c">Terms</a> and <a href="/t&c">Privacy Policy</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- avatar preview modal  -->
+ <div class="modal fade" id="avatarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered p-0 ">
+    <div class="modal-content bg-transparent border-0 p-0">
+    
+      <div class="modal-body text-center">
+        <img src="" alt="profile-pic" class="img-fluid rounded-3">
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+
+    <div class="container py-4">
+        <!-- Profile Header Card -->
+        <div class="card mb-4 shadow-sm">
+            <div class="row g-0">
+                <div  class="col-md-3 d-flex justify-content-center align-items-center p-3">
+                    <img onclick="showAvatar(event)" src="<%= user.avatar.url || '/images/cutezilla.png' %>" 
+                         class="profile-pic circular-image img-fluid" 
+                         alt="Profile picture" >
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap justify-content-between align-items-start mb-3">
+                            <div>
+                                <h1 class="h2 card-title mb-1"><%= user.fullname%></h1>
+                                <p class="text-muted mb-0">@<%=user.handle || user.fullname%></p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                
+                                <% if(!(currentUser && currentUser._id.equals(user._id))){ %>
+                                <button class="btn btn-primary " onclick="follow('<%=currentUser?currentUser._id:false%>', '<%=user._id%>', event)">
+                                    <% if(isFollow){ %>
+                                        <i class="bi bi-person-dash-fill me-2"></i><span>Unfollow</span>
+                                    <% }else{ %>
+                                        <i class="bi bi-person-plus-fill me-2"></i><span>follow</span>
+                                    <% } %>
+                                
+                                </button>
+                                <%}%>
+                                <% if( currentUser && currentUser._id.equals(user._id)){ %>
+                                <a href="/dashboard" class="btn btn-primary" >
+                                    Go to Dashboard</a>
+                                <% } %>
+                            </div>
+                        </div>
+                        
+                        <!-- user details  -->
+                        <div >
+                            
+                            <span class="text-muted">
+                                <i class="fas fa-calendar-alt me-1"></i>
+                                Joined on <%= user.createdAt.toLocaleDateString('en-US', { 
+                                        year: 'numeric', 
+                                        month: 'short', 
+                                        day: 'numeric'
+                                    }) %>
+                            </span>
+                            <div class="text-muted d-flex flex-column  gap-2">
+                              
+                                 <!-- Social Links -->
+        <% if (user.socials.github || user.socials.instagram  || user.socials.twitter || user.socials.linkedin) { %>
+            <Strong>You can Follow me here: </Strong>
+          <div class="social-links d-flex justify-content-start flex-wrap  row-gap-2 mb-4">
+            <% if (user.socials.github) { %>
+            
+              <a href="<%= user.socials.github %>" target="_blank" class=" me-4 socials-btn">
+                <span class="svgContainer">
+                  <svg fill="white" viewBox="0 0 496 512" height="1.6em"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+                </span>
+                <span class="BG BG-github"></span>
+              </a>
+            <% } %>
+            <% if (user.socials.twitter) { %>
+                <a href="<%= user.socials.instagram %>" target="_blank" class="me-4 socials-btn">
+                  <span class="svgContainer">
+                    <svg fill="white" viewBox="0 0 512 512" height="1.2em"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"></path></svg>
+                  </span>
+                  <span class="BG BG-twitter"></span>
+                </a>
+            <% } %>
+            <% if (user.socials.instagram) { %>
+              <a href="<%= user.socials.instagram %>" target="_blank" class=" me-4 socials-btn">
+                <span class="svgContainer">
+                  <svg fill="white" class="svgIcon" viewBox="0 0 448 512" height="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path></svg>
+                </span>
+                <span class="BG BG-insta"></span>
+              </a>
+            <% } %>
+            <% if (user.socials.linkedin) { %>
+              <a href="<%= user.socials.linkedin %>" target="_blank" class="me-4 socials-btn">
+                <span class="svgContainer">
+                  <svg
+                    viewBox="0 0 448 512"
+                    height="1.6em"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="svgIcon"
+                    fill="white"
+                  >
+                    <path
+                      d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8a53.8 53.8 0 0 1 107.6 0c0 29.7-24.1 54.3-53.8 54.3zM447.9 448h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.8V148.9h89.1v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 142.3V448z"
+                    ></path>
+                  </svg>
+                </span>
+                <span class="BG BG-linkedin"></span>
+              </a>
+            <% } %>
+          </div>
+        <% } %>
+                            </div>
+                        </div>
+                        
+                        <p class="card-text mb-4">
+                            <%=user.bio %>
+                        </p>
+                        
+                        <div class="d-flex gap-4 mb-4">
+                            <div class="text-center">
+                                <div class="h4 mb-0"><%=blogs.length%></div>
+                                <div class="text-muted small">Posts</div>
+                            </div>
+                            <div class="text-center">
+                                <div id="followerCount" class="h4 mb-0"><%= user.stats.followerCount|| 0%></div>
+                                <div class="text-muted small">Followers</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="h4 mb-0"><%= user.stats.followingCount || 0%></div>
+                                <div class="text-muted small">Following</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Blog Posts Section -->
+        <h2 class="h4 mb-4 d-flex align-items-center">
+            <i class="fas fa-pen-fancy text-primary me-3"></i>
+            <%=user.fullname%> most liked Blog Posts
+        </h2>
+        
+        <div class="row g-4 mb-4">
+            <!-- Blog Post 1 -->
+         <div class="container py-4">
+                <% if (blogs.length === 0) { %>
+                    <div class="d-flex flex-column align-items-center justify-content-center mt-4">
+                            <img src="/images/designer.svg" style="width: 100%; height:500px;" alt="">
+                            <p class="mt-3 text-slate-600 ">No Blogs found</p>
+                        </div>
+                <% } else { %>
+                    <div class="row">
+                    <% blogs.forEach(function(blog) { %>
+                        <div class="col-12 col-md-6 col-lg-4 mb-4 d-flex">
+                        <div class="blog-card card h-100 w-100">
+                            <img src="<%= blog.thumbnail.url %>" class="card-img-top" alt="<%= blog.title %>">
+                            <div class="card-category"><%= blog.category %></div>
+                            <div class="card-body">
+                            <h5 class="card-title"><%= blog.title %></h5>
+                            <p class="card-text"><%= blog.preview %>...</p>
+                            </div>
+                            <div class="card-body">
+                            <a class="btn btn-outline-primary" href="/blogs/<%= blog._id %>/show">Read</a>
+                            </div>
+                            <div class="card-footer bg-transparent border-top-0">
+                            <div class="d-flex justify-content-between align-items-center card-meta">
+                                <span><i class="bi bi-clock"></i> <%= blog.readTime || '5' %> read</span>
+                                <span style="color: rgb(255, 0, 0);"><i class="bi bi-person-hearts me-1"></i> <%= blog.stats.likeCount || '0' %></span>
+                                <span style="color: rgb(72, 196, 212);"><i class="bi bi-eye-fill me-1"></i> <%= blog.stats.viewCount || 0 %></span>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    <% }); %>
+                    </div>
+                <% } %>
+                </div>
+
+                    
+           
+        
+        
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="/js/bootstrapToast.js"></script>
+    <script src="/js/likefunctionality.js"></script>
+    <script>
+        function showAvatar(event){
+ 
+            const img = event.currentTarget;
+            const myModal = new bootstrap.Modal(document.getElementById('avatarModal'));
+            const modelImg = document.getElementById('avatarModal').querySelector('img');
+            modelImg.setAttribute('src', img.getAttribute('src'));
+            myModal.show();
+        }
+    </script>

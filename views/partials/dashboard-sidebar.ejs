@@ -1,0 +1,61 @@
+<aside class="dashboard-sidebar">
+  <div class="sidebar-header">
+    <a href="/" class="sidebar-brand">
+      <i class="bi bi-pen"></i>
+      <span>Blogzilla</span>
+    </a>
+  </div>
+  
+  <div class="p-3">
+    <ul class="nav flex-column">
+      <li class="nav-item <%= activePage === 'dashboard' ? 'active' : '' %>">
+        <a href="/dashboard" class="nav-link">
+          <i class="bi bi-speedometer2"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item <%= activePage === 'myBlogs' ? 'active' : '' %>">
+        <a href="/dashboard/myBlogs" class="nav-link">
+          <i class="bi bi-file-earmark-text"></i>
+          <span>My Blogs</span>
+        </a>
+      </li>
+      <li class="nav-item <%= activePage === 'create' ? 'active' : '' %>">
+        <a href="/blogs/create" class="nav-link">
+          <i class="bi bi-plus-circle"></i>
+          <span>New Blog</span>
+        </a>
+      </li>
+      <li class="nav-item <%= activePage === 'editProfile' ? 'active' : '' %>">
+        <a href="/dashboard/editProfile" class="nav-link">
+          <i class="bi bi-person-circle"></i>
+          <span>Edit Profile</span>
+        </a>
+      </li>
+      <li class="nav-item <%= activePage === 'connections' ? 'active' : '' %>">
+        <a href="/dashboard/connections" class="nav-link">
+            <i class="bi bi-people-fill"></i>
+          <span>Connections</span>
+        </a>
+      </li>
+    </ul>
+    
+    <div class="mt-4 pt-3 border-top border-light">
+      <h6 class="small text-white-50 mb-3">COMMUNITY</h6>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a href="/blogs" class="nav-link">
+            <i class="bi bi-people"></i>
+            <span>Explore Blogs</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/support" class="nav-link">
+            <i class="bi bi-question-circle"></i>
+            <span>Support</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blogzilla - The Ultimate Blogging Experience</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <!-- AOS (Animate On Scroll) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --primary-light: #8b5cf6;
+      --primary-dark: #6d28d9;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-300: #cbd5e1;
+      --slate-100: #f1f5f9;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: var(--slate-800);
+      overflow-x: hidden;
+    }
+    
+    /* Space for header */
+    .header-space {
+      height: 80px;
+    }
+    
+    /* Space for footer */
+    .footer-space {
+      height: 120px;
+    }
+    
+    .hero-gradient {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    }
+    
+    .feature-card {
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      border: none;
+      overflow: hidden;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(124, 58, 237, 0.2);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      border-color: var(--primary-dark);
+    }
+    
+    .btn-outline-primary {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .btn-outline-primary:hover {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .text-primary {
+      color: var(--primary) !important;
+    }
+    
+    .bg-slate {
+      background-color: var(--slate-100);
+    }
+    
+    .highlight-badge {
+      background-color: rgba(124, 58, 237, 0.1);
+      color: var(--primary);
+    }
+    /* Add this to your style section */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.container, .container-fluid {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Ensure all images are constrained to their container */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Add this media query for mobile-specific fixes */
+@media (max-width: 767px) {
+  body {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
+  /* If you have any elements with negative margins, reset them */
+  .row {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+}
+/* Temporary debug helper - will highlight overflowing elements in red */
+/* * {
+  outline: 1px solid red;
+} */
+  </style>
+</head>
+<body>
+  <!-- Space for header -->
+  <%- include('./partials/header.ejs') %>
+
+  <!-- Hero Section -->
+  <section class="hero-gradient text-white py-5">
+    <div class="container py-5">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+          <h1 class="display-4 fw-bold mb-4">Welcome to <span class="text-warning">Blogzilla</span></h1>
+          <p class="lead mb-4">The ultimate platform for writers who demand power, simplicity, and beautiful design in their blogging experience.</p>
+          <div class="d-flex gap-3">
+            <a href="/register" class="btn btn-light btn-lg px-4">Get Started</a>
+            <a href="/blogs" class="btn btn-outline-light btn-lg px-4">Explore more</a>
+          </div>
+        </div>
+        <div class="col-lg-6" data-aos="fade-left">
+          <img src="https://illustrations.popsy.co/amber/digital-nomad.svg" class="img-fluid animate__animated animate__pulse animate__infinite" style="animation-duration: 3s;" alt="Blogging Illustration">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section id="features" class="py-5 bg-slate">
+    <div class="container py-5">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <span class="highlight-badge px-3 py-1 rounded-pill fw-semibold">WHY CHOOSE BLOGZILLA</span>
+        <h2 class="display-5 fw-bold mt-3">Revolutionary Features <br>for Modern Bloggers</h2>
+      </div>
+      
+      <div class="row g-4">
+        <!-- Feature 1 -->
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-card bg-white p-4 h-100">
+            <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-flex mb-3">
+              <i class="bi bi-speedometer2 fs-3 text-primary"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Advanced Dashboard</h4>
+            <p class="text-muted">Manage all your content from one powerful dashboard with real-time analytics and performance metrics.</p>
+            <ul class="text-muted">
+              <li>Blogs performance tracking</li>
+              <li>Reader engagement stats</li>
+              <li>Content calendar</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-card bg-white p-4 h-100">
+            <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-flex mb-3">
+              <i class="bi bi-search fs-3 text-primary"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Smart Search</h4>
+            <p class="text-muted">Find exactly what you need with our advanced search that understands context and intent.</p>
+            <ul class="text-muted">
+              <li>Semantic search technology</li>
+              <li>Content recommendations</li>
+              <li>Saved searches</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-card bg-white p-4 h-100">
+            <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-flex mb-3">
+              <i class="bi bi-cloud-arrow-up fs-3 text-primary"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Auto-Save Drafts</h4>
+            <p class="text-muted">Never lose your work with continuous auto-saving and version history for all your posts.</p>
+            <ul class="text-muted">
+              <li>Every keystroke saved</li>
+              <li>7-days version history</li>
+              <li>Cross-device sync</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Feature 4 -->
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-card bg-white p-4 h-100">
+            <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-flex mb-3">
+              <i class="bi bi-palette fs-3 text-primary"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Beautiful Themes</h4>
+            <p class="text-muted">Choose from dozens of professionally designed themes that make your content shine.</p>
+            <ul class="text-muted">
+              <li>Customizable designs</li>
+              <li>Mobile-optimized</li>
+              <li>Dark mode support (soon)</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Feature 5 -->
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-card bg-white p-4 h-100">
+            <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-flex mb-3">
+              <i class="bi bi-people fs-3 text-primary"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Advance Recommendations System</h4>
+            <p class="text-muted">We provide content you like through our advance recommendations system</p>
+            <ul class="text-muted">
+              <li>Get What you Likes</li>
+              <li>Found blogs of whom you Follow</li>
+              <li>follow the creator you like</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Feature 6 -->
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-card bg-white p-4 h-100">
+            <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-flex mb-3">
+              <i class="bi bi-shield-lock fs-3 text-primary"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Enterprise Security</h4>
+            <p class="text-muted">Your content is protected with bank-grade security and automatic backups.</p>
+            <ul class="text-muted">
+              <li>End-to-end encryption</li>
+              <li>Two-factor authentication</li>
+              <li>Daily backups</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Editor Showcase -->
+  <section class="py-5">
+    <div class="container py-5">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+          <img src="/images/editorImage.jpg" class="img-fluid" alt="Editor Illustration">
+        </div>
+        <div class="col-lg-6" data-aos="fade-left">
+          <span class="highlight-badge px-3 py-1 rounded-pill fw-semibold">WRITE WITH JOY</span>
+          <h2 class="display-5 fw-bold mt-3 mb-4">The Most Enjoyable <br>Writing Experience</h2>
+          <p class="lead mb-4">Our editor removes all distractions so you can focus on what matters - your words.</p>
+          <div class="d-flex flex-column gap-3">
+            <div class="d-flex">
+              <div class="bg-primary bg-opacity-10 p-2 rounded-circle d-inline-flex me-3">
+                <i class="bi bi-type-bold text-primary"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold">Rich Formatting</h5>
+                <p class="text-muted mb-0">All the formatting tools you need without cluttering your workspace.</p>
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="bg-primary bg-opacity-10 p-2 rounded-circle d-inline-flex me-3">
+                <i class="bi bi-image text-primary"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold">Media Embed</h5>
+                <p class="text-muted mb-0">Drag and drop images, videos, and embeds directly into your posts.</p>
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="bg-primary bg-opacity-10 p-2 rounded-circle d-inline-flex me-3">
+                <i class="bi bi-robot text-primary"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold">Code</h5>
+                <p class="text-muted mb-0">For programmers, it has support for multiple languages. </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="py-5 bg-slate">
+    <div class="container py-5">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <span class="highlight-badge px-3 py-1 rounded-pill fw-semibold">TRUSTED BY WRITERS</span>
+        <h2 class="display-5 fw-bold mt-3">What Our Users Say</h2>
+      </div>
+      
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="bg-white p-4 rounded-3 h-100">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://randomuser.me/api/portraits/women/32.jpg" class="rounded-circle me-3" width="50" height="50" alt="User">
+              <div>
+                <h5 class="fw-bold mb-0">Yash Bansal</h5>
+                <small class="text-muted">Tech Blogger</small>
+              </div>
+            </div>
+            <p class="mb-0">"Blogzilla's editor is by far the most intuitive I've used. The auto-save feature has saved me countless times when inspiration strikes at odd hours."</p>
+          </div>
+        </div>
+        
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="bg-white p-4 rounded-3 h-100">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle me-3" width="50" height="50" alt="User">
+              <div>
+                <h5 class="fw-bold mb-0">Yuvraj Singh</h5>
+                <small class="text-muted">Travel Writer</small>
+              </div>
+            </div>
+            <p class="mb-0">"The analytics dashboard helped me understand my audience better than any other platform. My engagement doubled after switching to Blogzilla."</p>
+          </div>
+        </div>
+        
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="bg-white p-4 rounded-3 h-100">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle me-3" width="50" height="50" alt="User">
+              <div>
+                <h5 class="fw-bold mb-0">Remanshu Goyal</h5>
+                <small class="text-muted">Food Critic</small>
+              </div>
+            </div>
+            <p class="mb-0">"I love how easy it is to collaborate with my editor. The commenting and revision tracking features are game-changers for professional writers."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-5 hero-gradient text-white">
+    <div class="container py-5 text-center" data-aos="zoom-in">
+      <h2 class="display-5 fw-bold mb-4">Ready to Transform Your Blogging Experience?</h2>
+      <p class="lead mb-5">Join thousands of writers who have already made the switch to Blogzilla.</p>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="/register" class="btn btn-light btn-lg px-4">Get Started Free</a>
+        <a href="/blogs" class="btn btn-outline-light btn-lg px-4">See All Blogs</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Space for footer -->
+  <%- include('./partials/footer.ejs') %>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS (Animate On Scroll) -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Initialize AOS
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true
+    });
+  </script>
+</body>
+</html>
