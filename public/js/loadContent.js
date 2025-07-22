@@ -2,14 +2,14 @@ let previouslyActiveCategory = document.querySelector('#All');
 
 
 async  function loadContent(event){
+    previouslyActiveCategory.classList.toggle('active');
     const category = event.target.getAttribute('id');
+    previouslyActiveCategory = event.target;
+    previouslyActiveCategory.classList.toggle('active');
     try{
         const res = await fetch(`/api/categories/${category}`);
         const result = await res.json();
         if(res.ok){
-                previouslyActiveCategory.classList.toggle('active');
-                previouslyActiveCategory = event.target;
-                previouslyActiveCategory.classList.toggle('active');
                 renderBlogs(result);
         }else{
             alert('something went wrong reload the page and try again');
