@@ -6,8 +6,8 @@ async  function loadContent(event){
     const category = event.target.getAttribute('id');
     previouslyActiveCategory = event.target;
     previouslyActiveCategory.classList.toggle('active');
-    const content = category.innerHTML;
-    category.innerHTML = `<div class="spinner-border spinner-border-sm" role="status"></div>`;
+    const content = event.target.innerHTML;
+    event.target.innerHTML = `<div class="spinner-border spinner-border-sm" role="status"></div>`;
     try{
         const res = await fetch(`/api/categories/${category}`);
         const result = await res.json();
@@ -19,7 +19,7 @@ async  function loadContent(event){
     }catch(err){
         alert(err.message);
     }
-    category.innerHTML = content;
+    event.target.innerHTML = content;
 }
 
 function renderBlogs(obj) {
@@ -57,4 +57,3 @@ function blogComponent(blog){
                 </div>
             </div>`
 }
-
