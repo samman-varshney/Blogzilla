@@ -127,7 +127,7 @@ module.exports.editProfile = CatchAsync(async (req, res)=>{
 module.exports.myBlogs = CatchAsync(async (req, res)=>{
     const blogs = await Blog.find({user: req.user._id});
     const drafts = await Draft.find({user: req.user._id})
-    res.render('dashboard/myBlogs', {
+    res.render('dashboard/myblogs', {
         title: 'My Blogs',
         activePage: 'myBlogs',
         user: req.user,
